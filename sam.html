@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Samruddhi | Happy Birthday</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ffafbd;
+            --secondary: #ffc3a0;
+            --glass: rgba(255, 255, 255, 0.2);
+            --text: #4a4a4a;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #ffafbd 0%, #ffc3a0 100%);
+            height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden; color: var(--text);
+        }
+
+        .hearts { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+        /* Decorative images that don't disturb layout or the background */
+        .decor-img {
+            position: absolute;
+            width: clamp(120px, 20vw, 260px);
+            opacity: 0.95;
+            pointer-events: none;
+            user-select: none;
+            z-index: 0;
+            transition: transform 0.6s ease;
+            will-change: transform;
+        }
+
+        .decor-img.left { left: 4vw; top: 8vh; transform: translateY(0); }
+        .decor-img.right { right: 4vw; bottom: 8vh; transform: translateY(0); }
+
+        @media (max-width: 600px) {
+            .decor-img { display: none; }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 30px;
+            padding: 50px 30px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            max-width: 450px;
+            width: 85%;
+            z-index: 1;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            margin: 0 0 15px 0;
+            color: #fff;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .bday-text {
+            font-size: 3rem !important;
+            letter-spacing: 2px;
+            animation: glow 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #fff, 0 0 20px #ffafbd; }
+            to { text-shadow: 0 0 20px #fff, 0 0 30px #ff6b81; }
+        }
+
+        p { font-size: 1.1rem; color: #fff; margin-bottom: 30px; }
+
+        .btn {
+            background: #fff;
+            color: #ff8e9e;
+            border: none;
+            padding: 18px 35px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+
+        .btn:hover { transform: scale(1.1); box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
+
+        #message-display {
+            margin-top: 25px;
+            font-size: 1.2rem;
+            min-height: 60px;
+            opacity: 0;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .active-msg { opacity: 1 !important; transition: 0.5s; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="hearts" id="heart-container">
+        <!-- Decorative images (replace src with your own images if desired) -->
+        <img class="decor-img left" src="1.jpeg" alt="left decoration">
+        <img class="decor-img right" src="2.jpeg" alt="right decoration">
+    </div>
+
+    <div class="card" id="main-card">
+        <div id="content-wrap">
+            <h1 id="title">Samruddhi</h1>
+            <p id="sub-title">To the girl who makes every moment <i>fabulous</i>.</p>
+            
+            <button class="btn" id="action-btn" onclick="nextStep()">Click for a Surprise</button>
+            
+            <div id="message-display"></div>
+        </div>
+    </div>
+
+    <script>
+        const messages = [
+            "You're not just my best friend, you're a vibe! ✨",
+            "To more late-night chats and endless laughter! 🥂",
+            "Keep shining, Samruddhi. The world needs your glow! 🌟",
+            "You deserve all the cake and love today! 🎂",
+            "Smart, Stunning, and Samruddhi! 💖"
+        ];
+
+        let msgIndex = 0;
+        const btn = document.getElementById('action-btn');
+        const display = document.getElementById('message-display');
+        const title = document.getElementById('title');
+        const subTitle = document.getElementById('sub-title');
+
+        function nextStep() {
+            if (msgIndex < messages.length) {
+                // Show Messages Phase
+                display.classList.remove('active-msg');
+                confetti({ particleCount: 50, spread: 60, origin: { y: 0.7 }, colors: ['#fff'] });
+
+                setTimeout(() => {
+                    display.innerText = messages[msgIndex];
+                    display.classList.add('active-msg');
+                    msgIndex++;
+                    if (msgIndex === messages.length) {
+                        btn.innerText = "One Last Thing...";
+                    }
+                }, 200);
+            } else {
+                // Finale Phase
+                showFinale();
+            }
+        }
+
+        function showFinale() {
+            display.classList.remove('active-msg');
+            btn.classList.add('hidden');
+            subTitle.classList.add('hidden');
+            
+            title.innerText = "HAPPIEST BIRTHDAY SAM";
+            title.classList.add('bday-text');
+
+            // Add birthday message text to the message display
+            display.innerHTML = "<strong>!</strong><br>To the one who knows me best and still loves me 💖Forever grateful for you,Wishing you a year filled with love, laughter, and magic ✨";
+            display.classList.add('active-msg');
+            
+            // Continuous Celebration
+            var duration = 15 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+
+        // Floating sparkles in background
+        function createHearts() {
+            const container = document.getElementById('heart-container');
+            for (let i = 0; i < 20; i++) {
+                const h = document.createElement('div');
+                h.innerHTML = '✨';
+                h.style.position = 'absolute';
+                h.style.left = Math.random() * 100 + 'vw';
+                h.style.top = Math.random() * 100 + 'vh';
+                h.style.opacity = '0.3';
+                h.style.animation = `float ${Math.random() * 3 + 2}s infinite alternate ease-in-out`;
+                container.appendChild(h);
+            }
+        }
+        createHearts();
+    </script>
+</body>
+</html>
